@@ -5,7 +5,7 @@ def nice_print(data):
     """
     Print a well formatted report
     :param data: A list of dictionaries
-    :return: None
+    :return: The main message
     """
     main_message = ''
 
@@ -31,6 +31,7 @@ def nice_print(data):
         main_message += message
 
     print(main_message)
+    return main_message
 
 
 def get_activities(parents_dict, activities_list):

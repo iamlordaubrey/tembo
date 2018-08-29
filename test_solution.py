@@ -20,6 +20,18 @@ class TestChildActivities(unittest.TestCase):
                 self.assertIn(activity01, child.get('activities'))
                 self.assertIn(activity02, child.get('activities'))
 
+    def test_edge_case_for_child(self):
+        test_message = 'Sorry, no child name found!'
+        data = [{
+            'parent_name': 'Milo',
+            'child_name': None,
+            'age': None,
+            'activities': []
+        }]
+
+        formatted_message = solution.nice_print(data)
+        self.assertIn(test_message, formatted_message)
+
 
 if __name__ == '__main__':
     unittest.main()
