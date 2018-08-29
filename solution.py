@@ -8,13 +8,23 @@ def nice_print(data):
     :return: None
     """
     main_message = ''
-    for item in data:
-        list_activities = '\n'.join(item.get('activities'))
 
+    for item in data:
         message = '\n'
         message += f'Hi {item.get("parent_name")}\n'
-        message += f'Here\'s a list of activities for {item.get("child_name")}:\n\n'
-        message += f'{list_activities}\n\n'
+
+        list_activities = '\n'.join(item.get('activities'))
+
+        if not item.get('child_name'):
+            message += 'Sorry, no child name found!\n\n'
+        elif not item.get('age'):
+            message += f'Sorry, no age found for {item.get("child_name")}!\n\n'
+        elif not list_activities:
+            message += f'Sorry, no activity for {item.get("child_name")}!\n\n'
+        else:
+            message += f'Here\'s a list of activities for {item.get("child_name")}:\n\n'
+            message += f'{list_activities}\n\n'
+
         message += 'Curriculum complete!\n'
         message += '\n'
 
