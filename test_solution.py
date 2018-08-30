@@ -44,5 +44,25 @@ class TestAddParent(TestCase):
         self.assertEqual(len(parent_dict), 2)
 
 
+class TestAddActivity(TestCase):
+    @mock.patch('solution.input', create=True)
+    def test_user_adds_activity(self, mocked_input):
+        activities_list = [{
+            'age': 1,
+            'activity': [
+                'Go outside and feel surfaces.',
+                'Try singing a song together.',
+                'Point and name objects.'
+            ]
+        }]
+        mocked_input.side_effect = [1, 1, 'Learn ABC.', 0]
+        solution.add_activity(activities_list)
+        for item in activities_list:
+            self.assertIsNotNone(item['activity'])
+            self.assertIn('Learn ABC.', item['activity'])
+            self.assertEqual(len(activities_list), 1)
+            self.assertEqual(len(item['activity']), 4)
+
+
 if __name__ == '__main__':
     main()
