@@ -109,7 +109,7 @@ def prompter(message, error, type_fn):
 
 def add_parent(parents_dict):
     opt_in = 'Would you like to add a parent?\n'
-    opt_in += 'Enter 1 for Yes, or 0 for No: '
+    opt_in += 'Enter 0 for No, or 1 for Yes: '
     opt_in_error = 'Value should either be 0 or 1\n'
 
     # User enters 0
@@ -134,9 +134,51 @@ def add_parent(parents_dict):
     add_parent(parents_dict)
 
 
+def add_activity(activities_list):
+    opt_in = 'Would you like to add an activity?\n'
+    opt_in += 'Enter 0 for No, or 1 for Yes: '
+    opt_in_error = 'Value should either be 0 or 1'
+
+    # User enters 0
+    if not prompter(opt_in, opt_in_error, type_fn=check_binary):
+        return
+
+    # Validate activity's age
+    age_message = 'Please enter activity age: '
+    age_error = 'Value should be a positive integer.\n'
+    activity_age = prompter(age_message, age_error, type_fn=int)
+
+    activity = input(f'Please enter activity for age {activity_age}: ')
+
+    # Check if activity age exists in current activities
+    age_or_none = next(
+        (ind for ind, activity in enumerate(activities_list) if activity.get('age') == int(activity_age)), None
+    )
+
+    # If it doesn't...
+    if age_or_none is None:
+        activity_obj = {
+            'age': activity_age,
+            'activity': [activity]
+        }
+
+        # Add activity object to list of activities
+        activities_list.append(activity_obj)
+    else:
+        activities_list[age_or_none]['activity'].append(activity)
+
+    nice_print(activities_list)
+
+    # Add another activity...
+    add_activity(activities_list)
+
+
 def sentry():
     # User add's a parent
     add_parent(parents)
+
+    # User add's an activity
+    add_activity(activities)
 
     # Get all the activities per child
     child_activities = get_activities(parents, activities)
