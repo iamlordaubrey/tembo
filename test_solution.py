@@ -1,10 +1,10 @@
-import unittest
+from unittest import TestCase, main, mock
 
 import solution
 from CodeChallengeJune18 import parents, activities
 
 
-class TestChildActivities(unittest.TestCase):
+class TestChildActivities(TestCase):
     def test_activities_for_child(self):
         parent_name = 'Henry'
         child_name = 'Calvin'
@@ -29,9 +29,20 @@ class TestChildActivities(unittest.TestCase):
             'activities': []
         }]
 
-        formatted_message = solution.nice_print(data)
+        formatted_message = solution.nice_print('', data)
         self.assertIn(test_message, formatted_message)
 
 
+class TestAddParent(TestCase):
+    @mock.patch('solution.input', create=True)
+    def test_user_adds_parent(self, mocked_input):
+        parent_dict = {'Henry': {'childName': 'Calvin', 'age': 1}}
+        mocked_input.side_effect = [1, 'Abraham', 'Isaac', 2, 0]
+        solution.add_parent(parent_dict)
+        self.assertIsNotNone(parent_dict.get('Abraham'))
+        self.assertEqual({'childName': 'Isaac', 'age': 2}, parent_dict.get('Abraham'))
+        self.assertEqual(len(parent_dict), 2)
+
+
 if __name__ == '__main__':
-    unittest.main()
+    main()
